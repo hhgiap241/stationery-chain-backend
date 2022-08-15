@@ -1,21 +1,41 @@
 server:
   port: 8080
 
-spring:
-  security:
-    oauth2:
-      client:
-        registration:
-          oauth2-demo-thymeleaf-client:
-            client-id: oauth2-demo-thymeleaf-client
-            client-secret: Nuk0utEc9ULjOkGPlM36Ca3J252d4rXs
-            scope:
-              - openid
-              - profile
-              - roles
-            authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/login/oauth2/code/oauth2-demo-thymeleaf-client
-        provider:
-          oauth2-demo-thymeleaf-client:
-            issuer-uri: http://localhost:8180/auth/realms/oauth2-demo-realm
+keycloak:
+  realm: stationery-realm
+  auth-server-url: http://localhost:8180/auth/
+  resource: react-client
+  bearer-only: true
+  public-client: true
 
+spring:
+  main:
+    allow-circular-references: true
+#spring:
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://localhost:8180/auth/realms/stationery-realm
+#          jwk-set-uri: http://localhost:8180/auth/realms/stationery-realm/protocol/openid-connect/certs
+#
+#  datasource:
+#    url: jdbc:mysql://localhost:3308/stationery-chain
+#    username: admin
+#    password: admin
+#
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        show_sql: true
+#        dialect: org.hibernate.dialect.MySQL5Dialect
+#
+#jwt:
+#  auth:
+#    converter:
+#      resource-id: stationery-client
+#      principal-attribute: preferred_username
