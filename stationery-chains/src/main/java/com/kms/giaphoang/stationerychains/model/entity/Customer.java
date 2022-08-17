@@ -1,4 +1,4 @@
-package com.kms.giaphoang.stationerychains.model;
+package com.kms.giaphoang.stationerychains.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
