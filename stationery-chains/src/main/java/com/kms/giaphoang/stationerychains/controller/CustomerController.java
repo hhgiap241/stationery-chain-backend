@@ -23,7 +23,7 @@ public class CustomerController {
             new Customer("2", "Nguyen Van B"),
             new Customer("3", "Nguyen Van C")
     );
-    @PreAuthorize("hasRole('ADMIN')")
+
     @GetMapping
     public ResponseEntity<List<Customer>> getAllCustomer() {
         return ResponseEntity.ok(customerList);

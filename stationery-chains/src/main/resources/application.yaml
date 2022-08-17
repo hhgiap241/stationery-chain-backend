@@ -8,9 +8,7 @@ keycloak:
   bearer-only: true
   public-client: true
 
-spring:
-  main:
-    allow-circular-references: true
+
 #spring:
 #  security:
 #    oauth2:

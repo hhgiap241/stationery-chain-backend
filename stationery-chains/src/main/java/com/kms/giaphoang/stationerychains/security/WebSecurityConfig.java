@@ -1,6 +1,8 @@
 package com.kms.giaphoang.stationerychains.security;
 
+import com.kms.giaphoang.stationerychains.model.enums.Role;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
+import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @created : 8/12/2022, Friday
  * @project: stationery
  **/
-@EnableWebSecurity // @Configuration is included in this annotation
-@ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@KeycloakConfiguration
 public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     // configureGlobal() tasks the SimpleAuthorityMapper to make sure roles are not
@@ -38,12 +38,7 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         auth.authenticationProvider(keycloakAuthenticationProvider);
     }
 
-    // keycloakConfigResolver defines that we want to use the Spring Boot properties
-    // file support instead of the default keycloak.json.
-    @Bean
-    public KeycloakSpringBootConfigResolver KeycloakConfigResolver() {
-        return new KeycloakSpringBootConfigResolver();
-    }
+
 
     @Bean
     @Override
@@ -55,19 +50,10 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
-        http.cors().and()
-                .csrf().disable()
-                .authorizeRequests().anyRequest().permitAll();
-    }
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("*");
-            }
-        };
+        http.cors()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/v1/customers*").hasAnyRole(Role.ADMIN.name(), Role.CUSTOMER.name())
+                .anyRequest().permitAll();
     }
 }
