@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.lang.annotation.Documented;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Set;
 
 
 /**
@@ -45,4 +46,6 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+    @OneToMany(mappedBy = "product")
+    private Set<OrderDetail> orderDetails;
 }

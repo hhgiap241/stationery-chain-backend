@@ -1,6 +1,5 @@
 package com.kms.giaphoang.stationerychains.model.entity;
 
-import com.kms.giaphoang.stationerychains.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,30 +15,32 @@ import java.util.Set;
 /**
  * @author : giaphoang
  * @mailto : hoanghuugiap241@gmail.com
- * @created : 8/12/2022, Friday
+ * @created : 8/18/2022, Thursday
  * @project: stationery
  **/
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
-@Table(name = "user")
+@Table(name = "order")
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class Order {
     @Id
-    private String id;
-    private String username;
-    private String email;
-    private String address;
-    private String phone;
+    @SequenceGenerator(name = "order_seq", sequenceName = "order_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
+    private Integer id;
+    private Double totalPrice;
+    private Double shippingPrice;
     @CreatedDate
     @Column(name = "created_date")
     private LocalDateTime createdAt;
     @LastModifiedDate
     @Column(name = "last_modified_date")
     private LocalDateTime updatedAt;
-    private String role;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<Order> orders;
+    @OneToMany(mappedBy = "order")
+    private Set<OrderDetail> orderDetails;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

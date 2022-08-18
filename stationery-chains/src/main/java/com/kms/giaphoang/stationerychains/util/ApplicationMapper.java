@@ -1,9 +1,11 @@
 package com.kms.giaphoang.stationerychains.util;
 
 import com.kms.giaphoang.stationerychains.model.dto.CategoryDto;
+import com.kms.giaphoang.stationerychains.model.dto.OrderDto;
 import com.kms.giaphoang.stationerychains.model.dto.UserDto;
 import com.kms.giaphoang.stationerychains.model.dto.ProductDto;
 import com.kms.giaphoang.stationerychains.model.entity.Category;
+import com.kms.giaphoang.stationerychains.model.entity.Order;
 import com.kms.giaphoang.stationerychains.model.entity.User;
 import com.kms.giaphoang.stationerychains.model.entity.Product;
 import com.kms.giaphoang.stationerychains.model.enums.Role;
@@ -52,6 +54,17 @@ public class ApplicationMapper {
                 .createdDate(customer.getCreatedAt())
                 .updatedDate(customer.getUpdatedAt())
                 .role(Role.valueOf(customer.getRole()))
+                .build();
+    }
+    public OrderDto toOrderDto(Order order){
+        return OrderDto.builder()
+                .id(order.getId())
+                .totalPrice(order.getTotalPrice())
+                .shippingPrice(order.getShippingPrice())
+                .createdAt(order.getCreatedAt())
+                .updateAt(order.getUpdatedAt())
+                .userId(order.getUser().getId())
+                .orderDetails(order.getOrderDetails())
                 .build();
     }
 }
