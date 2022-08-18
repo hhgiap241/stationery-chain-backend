@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,11 @@ import java.util.stream.Collectors;
 public class ProductController extends AbstractApplicationController {
     private final ProductService productService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> getProductById(@PathVariable Integer id) {
+        return ResponseEntity.ok(mapper.toProductDto(productService.findProductById(id)));
+    }
+
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAllProduct() {
         List<Product> products = productService.getAllProducts();
@@ -31,9 +37,21 @@ public class ProductController extends AbstractApplicationController {
                 .collect(Collectors.toList())
         );
     }
+
     @PostMapping
-    public ResponseEntity<Integer> saveProduct(@RequestBody ProductDto productDto){
+    public ResponseEntity<Integer> saveProduct(@Valid @RequestBody ProductDto productDto) {
         final Integer id = productService.saveProduct(productDto);
         return ResponseEntity.ok(id);
+    }
+
+    @PutMapping
+    public ResponseEntity<Integer> updateProduct(@Valid @RequestBody ProductDto productDto) {
+        final Integer id = productService.updateProduct(productDto);
+        return ResponseEntity.ok(id);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable Integer id){
+        productService.deleteProduct(id);
+        return ResponseEntity.ok("Delete product successfully");
     }
 }

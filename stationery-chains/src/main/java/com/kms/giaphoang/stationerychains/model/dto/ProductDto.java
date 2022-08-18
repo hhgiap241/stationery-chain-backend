@@ -4,6 +4,7 @@ import com.kms.giaphoang.stationerychains.model.entity.Category;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
@@ -22,15 +23,14 @@ public class ProductDto {
     private String name;
     @NotBlank(message = "Description is required")
     private String description;
-    @NotBlank(message = "Price is required")
+    @Min(0)
     private Double price;
-    @NotBlank(message = "Quantity is required")
+    @Min(0)
     private Integer quantity;
     @NotBlank(message = "Producer's name is required")
     private String producer;
     @NotBlank(message = "Image is required")
     private String image;
-    @NotBlank(message = "Status is required")
     private Boolean status;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;

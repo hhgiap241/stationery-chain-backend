@@ -1,6 +1,7 @@
 package com.kms.giaphoang.stationerychains.service.impl;
 
 import com.kms.giaphoang.stationerychains.exception.CategoryExistedException;
+import com.kms.giaphoang.stationerychains.exception.CategoryNotFoundException;
 import com.kms.giaphoang.stationerychains.model.dto.CategoryDto;
 import com.kms.giaphoang.stationerychains.model.entity.Category;
 import com.kms.giaphoang.stationerychains.repository.CategoryRepository;
@@ -28,13 +29,24 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category getCategoryById(Integer id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException("Category with id = " + id + " not found."));
+    }
+
+    @Override
+    public Category getCategoryByName(String name) {
+        return categoryRepository.findCategoryByName(name)
+                .orElseThrow(() -> new CategoryNotFoundException("Category " + name + " not found."));
+    }
+
+    @Override
     public Integer saveCategory(CategoryDto categoryDto) {
         final Optional<Category> categoryOptional = categoryRepository.findCategoryByName(categoryDto.getName());
         if (categoryOptional.isPresent()) {
             throw new CategoryExistedException("Category " + categoryDto.getName() + " is already existed.");
         }
         Category category = Category.builder().name(categoryDto.getName()).build();
-        final Integer id = categoryRepository.save(category).getId();
-        return id;
+        return categoryRepository.save(category).getId();
     }
 }

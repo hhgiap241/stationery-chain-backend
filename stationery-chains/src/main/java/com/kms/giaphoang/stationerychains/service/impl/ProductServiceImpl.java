@@ -1,6 +1,7 @@
 package com.kms.giaphoang.stationerychains.service.impl;
 
 import com.kms.giaphoang.stationerychains.exception.CategoryNotFoundException;
+import com.kms.giaphoang.stationerychains.exception.ProductNotFoundException;
 import com.kms.giaphoang.stationerychains.model.dto.ProductDto;
 import com.kms.giaphoang.stationerychains.model.entity.Category;
 import com.kms.giaphoang.stationerychains.model.entity.Product;
@@ -27,6 +28,12 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
 
     @Override
+    public Product findProductById(Integer id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with id =  " + id + " not found."));
+    }
+
+    @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
@@ -45,7 +52,30 @@ public class ProductServiceImpl implements ProductService {
                 .status(productDto.getStatus())
                 .category(category)
                 .build();
-        final Integer id = productRepository.save(product).getId();
-        return id;
+        return productRepository.save(product).getId();
+    }
+
+    @Override
+    public Integer updateProduct(ProductDto productDto) {
+        Category category = categoryRepository.findById(productDto.getCategoryId())
+                .orElseThrow(() -> new CategoryNotFoundException("Category with id " + productDto.getCategoryId() + " not found"));
+        Product product = productRepository.findById(productDto.getId())
+                .orElseThrow(() -> new ProductNotFoundException("Product with id = " + productDto.getId() + " not found."));
+        product.setName(productDto.getName());
+        product.setDescription(productDto.getDescription());
+        product.setPrice(productDto.getPrice());
+        product.setQuantity(productDto.getQuantity());
+        product.setProducer(productDto.getProducer());
+        product.setImage(productDto.getImage());
+        product.setStatus(productDto.getStatus());
+        product.setCategory(category);
+        return productRepository.save(product).getId();
+    }
+
+    @Override
+    public void deleteProduct(Integer id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with id = " + id + " not found."));
+        productRepository.deleteById(id);
     }
 }

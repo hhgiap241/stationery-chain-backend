@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,16 @@ import java.util.stream.Collectors;
 public class CategoryController extends AbstractApplicationController {
     private final CategoryService categoryService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable Integer id) {
+        return ResponseEntity.ok(mapper.toCategoryDto(categoryService.getCategoryById(id)));
+    }
+
+    @GetMapping("/{name}")
+    public ResponseEntity<CategoryDto> getCategoryByName(@PathVariable String name) {
+        return ResponseEntity.ok(mapper.toCategoryDto(categoryService.getCategoryByName(name)));
+    }
+
     @GetMapping
     public ResponseEntity<List<CategoryDto>> getAllCategory() {
         final List<Category> categories = categoryService.getAllCategory();
@@ -31,7 +42,7 @@ public class CategoryController extends AbstractApplicationController {
     }
 
     @PostMapping
-    public ResponseEntity<Integer> saveCategory(@RequestBody CategoryDto categoryDto) {
+    public ResponseEntity<Integer> saveCategory(@Valid @RequestBody CategoryDto categoryDto) {
         final Integer id = categoryService.saveCategory(categoryDto);
         return ResponseEntity.ok(id);
     }
