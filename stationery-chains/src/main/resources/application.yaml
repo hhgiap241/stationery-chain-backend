@@ -9,31 +9,16 @@ keycloak:
   public-client: true
 
 
-#spring:
-#  security:
-#    oauth2:
-#      resourceserver:
-#        jwt:
-#          issuer-uri: http://localhost:8180/auth/realms/stationery-realm
-#          jwk-set-uri: http://localhost:8180/auth/realms/stationery-realm/protocol/openid-connect/certs
-#
-#  datasource:
-#    url: jdbc:mysql://localhost:3308/stationery-chain
-#    username: admin
-#    password: admin
-#
-#
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    properties:
-#      hibernate:
-#        format_sql: true
-#        show_sql: true
-#        dialect: org.hibernate.dialect.MySQL5Dialect
-#
-#jwt:
-#  auth:
-#    converter:
-#      resource-id: stationery-client
-#      principal-attribute: preferred_username
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3308/stationery-chain
+    username: admin
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.MySQL5Dialect
