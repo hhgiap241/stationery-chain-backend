@@ -51,8 +51,8 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/api/v1/categories/**").hasRole(ADMIN.name())
                 .antMatchers(HttpMethod.DELETE, "/api/v1/categories/**").hasRole(ADMIN.name())
                 .antMatchers(HttpMethod.GET, "/api/v1/categories/**").hasAnyRole(ADMIN.name(), CUSTOMER.name())
-                .antMatchers("/api/v1/customers/**").hasRole(CUSTOMER.name())
-                .antMatchers("/api/v1/products*").hasAnyRole(ADMIN.name(), CUSTOMER.name())
+                .antMatchers("/api/v1/users/**").hasAnyRole(CUSTOMER.name(), ADMIN.name())
+                .antMatchers("/api/v1/products/**").hasAnyRole(ADMIN.name(), CUSTOMER.name())
                 .anyRequest().permitAll();
     }
 }

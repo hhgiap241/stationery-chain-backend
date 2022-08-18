@@ -1,9 +1,12 @@
 package com.kms.giaphoang.stationerychains.util;
 
 import com.kms.giaphoang.stationerychains.model.dto.CategoryDto;
+import com.kms.giaphoang.stationerychains.model.dto.UserDto;
 import com.kms.giaphoang.stationerychains.model.dto.ProductDto;
 import com.kms.giaphoang.stationerychains.model.entity.Category;
+import com.kms.giaphoang.stationerychains.model.entity.User;
 import com.kms.giaphoang.stationerychains.model.entity.Product;
+import com.kms.giaphoang.stationerychains.model.enums.Role;
 import org.springframework.stereotype.Component;
 
 /**
@@ -37,6 +40,18 @@ public class ApplicationMapper {
                 .createdDate(category.getCreatedAt())
                 .updatedDate(category.getUpdatedAt())
                 .products(category.getProducts())
+                .build();
+    }
+    public UserDto toCustomerDto(User customer){
+        return UserDto.builder()
+                .id(customer.getId())
+                .username(customer.getUsername())
+                .email(customer.getEmail())
+                .address(customer.getAddress())
+                .phone(customer.getPhone())
+                .createdDate(customer.getCreatedAt())
+                .updatedDate(customer.getUpdatedAt())
+                .role(Role.valueOf(customer.getRole()))
                 .build();
     }
 }

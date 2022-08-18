@@ -2,9 +2,9 @@ package com.kms.giaphoang.stationerychains.controller;
 
 import com.kms.giaphoang.stationerychains.exception.CategoryExistedException;
 import com.kms.giaphoang.stationerychains.exception.CategoryNotFoundException;
+import com.kms.giaphoang.stationerychains.exception.UserExistedException;
 import com.kms.giaphoang.stationerychains.exception.ProductNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -40,6 +40,12 @@ public class ExceptionController {
 
     @ExceptionHandler(CategoryExistedException.class)
     public ResponseEntity<Map<String, String>> handleCategoryExistedException(CategoryExistedException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.badRequest().body(Map.of(ERROR_MESSAGE, e.getMessage()));
+    }
+
+    @ExceptionHandler(UserExistedException.class)
+    public ResponseEntity<Map<String, String>> handleCustomerExistedException(UserExistedException e) {
         log.error(e.getMessage());
         return ResponseEntity.badRequest().body(Map.of(ERROR_MESSAGE, e.getMessage()));
     }
