@@ -1,6 +1,8 @@
 package com.kms.giaphoang.stationerychains.util;
 
+import com.kms.giaphoang.stationerychains.model.dto.CategoryDto;
 import com.kms.giaphoang.stationerychains.model.dto.ProductDto;
+import com.kms.giaphoang.stationerychains.model.entity.Category;
 import com.kms.giaphoang.stationerychains.model.entity.Product;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +28,15 @@ public class ApplicationMapper {
                 .updatedDate(product.getUpdatedDate())
                 .categoryId(product.getCategory().getId())
                 .categoryName(product.getCategory().getName())
+                .build();
+    }
+    public CategoryDto toCategoryDto(Category category){
+        return CategoryDto.builder()
+                .id(category.getId())
+                .name(category.getName())
+                .createdDate(category.getCreatedAt())
+                .updatedDate(category.getUpdatedAt())
+                .products(category.getProducts())
                 .build();
     }
 }

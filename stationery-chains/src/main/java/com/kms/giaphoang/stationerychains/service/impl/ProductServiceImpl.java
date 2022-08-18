@@ -33,7 +33,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Integer saveProduct(ProductDto productDto) {
-        Category category = categoryRepository.findById(Integer.parseInt(productDto.getCategoryId()))
+        Category category = categoryRepository.findById(productDto.getCategoryId())
                 .orElseThrow(() -> new CategoryNotFoundException("Category with id " + productDto.getCategoryId() + " not found"));
         Product product = Product.builder()
                 .name(productDto.getName())

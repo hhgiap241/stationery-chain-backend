@@ -54,6 +54,7 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/customers*").hasAnyRole(Role.ADMIN.name(), Role.CUSTOMER.name())
+                .antMatchers("/api/v1/products*").hasAnyRole(Role.ADMIN.name(), Role.CUSTOMER.name())
                 .anyRequest().permitAll();
     }
 }

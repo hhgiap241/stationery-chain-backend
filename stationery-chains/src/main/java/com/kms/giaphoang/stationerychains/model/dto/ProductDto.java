@@ -34,6 +34,6 @@ public class ProductDto {
     private Boolean status;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
-    private String categoryId;
+    private Integer categoryId;
     private String categoryName;
 }
