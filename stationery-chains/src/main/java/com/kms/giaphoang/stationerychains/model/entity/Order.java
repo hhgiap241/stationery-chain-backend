@@ -8,57 +8,56 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
 
 /**
  * @author : giaphoang
  * @mailto : hoanghuugiap241@gmail.com
- * @created : 8/17/2022, Wednesday
+ * @created : 8/18/2022, Thursday
  * @project: stationery
  **/
-@Entity
-@Table(name = "product")
 @Getter
 @Setter
 @ToString
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Entity
+@Table(name = "_order")
 @EntityListeners(AuditingEntityListener.class)
-public class Product {
+public class Order {
     @Id
-    @SequenceGenerator(name = "product_seq", sequenceName = "product_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq")
+    @SequenceGenerator(name = "order_seq", sequenceName = "order_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
     private Integer id;
-    private String name;
-    private String description;
-    private Double price;
-    private Integer quantity;
-    private String producer;
-    private String image;
-    private Boolean status;
+    @Column(name="total_price")
+    private Double totalPrice;
+    @Column(name="shipping_price")
+    private Double shippingPrice;
     @CreatedDate
     @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
     @LastModifiedDate
     @Column(name = "last_modified_date")
-    private LocalDateTime updatedDate;
+    private LocalDateTime updatedAt;
+    private String status;
+
+    @OneToMany(mappedBy = "order")
+    @ToString.Exclude
+    private Set<OrderDetail> orderDetails = new HashSet<>();
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "user_id")
     @ToString.Exclude
-    private Category category;
-    @OneToMany(mappedBy = "product")
-    @ToString.Exclude
-    private Set<OrderDetail> orderDetails;
+    private User user;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Product product = (Product) o;
-        return id != null && Objects.equals(id, product.id);
+        Order order = (Order) o;
+        return id != null && Objects.equals(id, order.id);
     }
 
     @Override

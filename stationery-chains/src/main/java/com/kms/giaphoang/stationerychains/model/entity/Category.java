@@ -1,15 +1,14 @@
 package com.kms.giaphoang.stationerychains.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -19,7 +18,9 @@ import java.util.Set;
  * @project: stationery
  **/
 
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -39,5 +40,19 @@ public class Category {
     @Column(name = "last_modified_date")
     private LocalDateTime updatedAt;
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Set<Product> products;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Category category = (Category) o;
+        return id != null && Objects.equals(id, category.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
