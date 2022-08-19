@@ -1,15 +1,11 @@
 package com.kms.giaphoang.stationerychains.util;
 
-import com.kms.giaphoang.stationerychains.model.dto.CategoryDto;
-import com.kms.giaphoang.stationerychains.model.dto.OrderDto;
-import com.kms.giaphoang.stationerychains.model.dto.UserDto;
-import com.kms.giaphoang.stationerychains.model.dto.ProductDto;
-import com.kms.giaphoang.stationerychains.model.entity.Category;
-import com.kms.giaphoang.stationerychains.model.entity.Order;
-import com.kms.giaphoang.stationerychains.model.entity.User;
-import com.kms.giaphoang.stationerychains.model.entity.Product;
+import com.kms.giaphoang.stationerychains.model.dto.*;
+import com.kms.giaphoang.stationerychains.model.entity.*;
 import com.kms.giaphoang.stationerychains.model.enums.Role;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 /**
  * @author : giaphoang
@@ -35,7 +31,8 @@ public class ApplicationMapper {
                 .categoryName(product.getCategory().getName())
                 .build();
     }
-    public CategoryDto toCategoryDto(Category category){
+
+    public CategoryDto toCategoryDto(Category category) {
         return CategoryDto.builder()
                 .id(category.getId())
                 .name(category.getName())
@@ -44,7 +41,8 @@ public class ApplicationMapper {
                 .products(category.getProducts())
                 .build();
     }
-    public UserDto toCustomerDto(User customer){
+
+    public UserDto toCustomerDto(User customer) {
         return UserDto.builder()
                 .id(customer.getId())
                 .username(customer.getUsername())
@@ -56,7 +54,8 @@ public class ApplicationMapper {
                 .role(Role.valueOf(customer.getRole()))
                 .build();
     }
-    public OrderDto toOrderDto(Order order){
+
+    public OrderDto toOrderDto(Order order) {
         return OrderDto.builder()
                 .id(order.getId())
                 .totalPrice(order.getTotalPrice())
@@ -64,7 +63,19 @@ public class ApplicationMapper {
                 .createdAt(order.getCreatedAt())
                 .updateAt(order.getUpdatedAt())
                 .userId(order.getUser().getId())
-                .orderDetails(order.getOrderDetails())
+                .status(order.getStatus())
+                .orderDetailDtos(order.getOrderDetails().stream()
+                        .map(orderDetail -> toOrderDetailDto(orderDetail))
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+    public OrderDetailDto toOrderDetailDto(OrderDetail orderDetail) {
+        return OrderDetailDto.builder()
+                .orderId(orderDetail.getId().getOrderId())
+                .productId(orderDetail.getId().getProductId())
+                .quantity(orderDetail.getQuantity())
+                .price(orderDetail.getPrice())
                 .build();
     }
 }

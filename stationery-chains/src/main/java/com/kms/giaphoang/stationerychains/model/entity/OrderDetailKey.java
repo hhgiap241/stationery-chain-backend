@@ -1,5 +1,9 @@
 package com.kms.giaphoang.stationerychains.model.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -12,6 +16,9 @@ import java.util.Objects;
  * @project: stationery
  **/
 @Embeddable
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderDetailKey implements Serializable {
     @Column(name = "order_id")
     private Integer orderId;

@@ -3,6 +3,8 @@ package com.kms.giaphoang.stationerychains.repository;
 import com.kms.giaphoang.stationerychains.model.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * @author : giaphoang
  * @mailto : hoanghuugiap241@gmail.com
@@ -10,4 +12,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @project: stationery
  **/
 public interface OrderRepository extends JpaRepository<Order, Integer> {
+    List<Order> findOrderByUserId(String userId);
 }

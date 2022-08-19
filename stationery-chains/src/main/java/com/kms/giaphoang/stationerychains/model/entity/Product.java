@@ -1,14 +1,14 @@
 package com.kms.giaphoang.stationerychains.model.entity;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.lang.annotation.Documented;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -20,7 +20,9 @@ import java.util.Set;
  **/
 @Entity
 @Table(name = "product")
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -45,7 +47,22 @@ public class Product {
     private LocalDateTime updatedDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
+    @ToString.Exclude
     private Category category;
     @OneToMany(mappedBy = "product")
+    @ToString.Exclude
     private Set<OrderDetail> orderDetails;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Product product = (Product) o;
+        return id != null && Objects.equals(id, product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

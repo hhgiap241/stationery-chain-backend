@@ -1,15 +1,15 @@
 package com.kms.giaphoang.stationerychains.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -18,7 +18,9 @@ import java.util.Set;
  * @created : 8/18/2022, Thursday
  * @project: stationery
  **/
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,9 +42,26 @@ public class Order {
     @LastModifiedDate
     @Column(name = "last_modified_date")
     private LocalDateTime updatedAt;
+    private String status;
+
     @OneToMany(mappedBy = "order")
-    private Set<OrderDetail> orderDetails;
+    @ToString.Exclude
+    private Set<OrderDetail> orderDetails = new HashSet<>();
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private User user;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Order order = (Order) o;
+        return id != null && Objects.equals(id, order.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

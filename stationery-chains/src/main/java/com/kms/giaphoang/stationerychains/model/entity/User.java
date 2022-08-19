@@ -1,16 +1,14 @@
 package com.kms.giaphoang.stationerychains.model.entity;
 
-import com.kms.giaphoang.stationerychains.model.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -19,7 +17,9 @@ import java.util.Set;
  * @created : 8/12/2022, Friday
  * @project: stationery
  **/
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -41,5 +41,19 @@ public class User {
     private LocalDateTime updatedAt;
     private String role;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Set<Order> orders;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

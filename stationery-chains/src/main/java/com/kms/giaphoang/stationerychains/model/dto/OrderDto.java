@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -27,5 +28,7 @@ public class OrderDto {
     private LocalDateTime updateAt;
     @NotBlank(message = "User id is required")
     private String userId;
-    private Set<OrderDetail> orderDetails;
+    private List<OrderDetailDto> orderDetailDtos;
+    @NotBlank(message = "Status is required")
+    private String status;
 }

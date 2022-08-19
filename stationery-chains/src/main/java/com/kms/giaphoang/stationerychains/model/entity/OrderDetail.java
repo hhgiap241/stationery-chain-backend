@@ -1,15 +1,11 @@
 package com.kms.giaphoang.stationerychains.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * @author : giaphoang
@@ -20,7 +16,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "order_detail")
 @EntityListeners(AuditingEntityListener.class)
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,19 +28,27 @@ public class OrderDetail {
 
     private Double price;
     private Integer quantity;
-    @CreatedDate
-    @Column(name = "created_date")
-    private LocalDateTime createdAt;
-    @LastModifiedDate
-    @Column(name = "last_modified_date")
-    private LocalDateTime updatedAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("productId")
     @JoinColumn(name = "product_id")
+    @ToString.Exclude
     private Product product;
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("orderId")
     @JoinColumn(name = "order_id")
+    @ToString.Exclude
     private Order order;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        OrderDetail that = (OrderDetail) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
