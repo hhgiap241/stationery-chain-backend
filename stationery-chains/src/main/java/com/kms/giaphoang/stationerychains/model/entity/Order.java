@@ -23,14 +23,16 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "order")
+@Table(name = "_order")
 @EntityListeners(AuditingEntityListener.class)
 public class Order {
     @Id
     @SequenceGenerator(name = "order_seq", sequenceName = "order_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
     private Integer id;
+    @Column(name="total_price")
     private Double totalPrice;
+    @Column(name="shipping_price")
     private Double shippingPrice;
     @CreatedDate
     @Column(name = "created_date")

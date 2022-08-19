@@ -25,22 +25,24 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDetail {
-    @Id
-    @SequenceGenerator(name = "order_detail_seq", sequenceName = "order_detail_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_detail_seq")
-    private Integer id;
+    @EmbeddedId
+    private OrderDetailKey id;
+
     private Double price;
     private Integer quantity;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order;
     @CreatedDate
     @Column(name = "created_date")
     private LocalDateTime createdAt;
     @LastModifiedDate
     @Column(name = "last_modified_date")
     private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("productId")
+    @JoinColumn(name = "product_id")
+    private Product product;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("orderId")
+    @JoinColumn(name = "order_id")
+    private Order order;
 }
