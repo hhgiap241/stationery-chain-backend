@@ -51,6 +51,11 @@ public class ExceptionController {
         log.error(e.getMessage());
         return ResponseEntity.badRequest().body(Map.of(ERROR_MESSAGE, e.getMessage()));
     }
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleOrderNotFoundException(OrderNotFoundException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.badRequest().body(Map.of(ERROR_MESSAGE, e.getMessage()));
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleMethodArgumentValidationException(MethodArgumentNotValidException e) {
